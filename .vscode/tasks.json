@@ -1,0 +1,64 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Android: Build Debug APK",
+      "type": "shell",
+      "command": "./scripts/android-env.sh ./gradlew assembleDebug",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Android: Install Debug (connected device)",
+      "type": "shell",
+      "command": "./scripts/android-env.sh ./gradlew installDebug",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Android: List Devices",
+      "type": "shell",
+      "command": "./scripts/android-env.sh adb devices",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Android: Launch App MainActivity",
+      "type": "shell",
+      "command": "./scripts/android-env.sh adb shell am start -n com.example.vouchergenerator/.MainActivity",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Android: Logcat (this app)",
+      "type": "shell",
+      "command": "./scripts/android-env.sh adb logcat --pid $(./scripts/android-env.sh adb shell pidof -s com.example.vouchergenerator)",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Android: Run on Connected Device",
+      "type": "shell",
+      "command": "echo \"Android run flow complete\"",
+      "dependsOn": [
+        "Android: List Devices",
+        "Android: Install Debug (connected device)",
+        "Android: Launch App MainActivity"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    }
+  ]
+}
