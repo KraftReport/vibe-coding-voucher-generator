@@ -16,7 +16,16 @@ class VoucherViewModel : ViewModel() {
     var address by mutableStateOf("")
         private set
 
+    var phoneNumber by mutableStateOf("")
+        private set
+
     var voucherDate by mutableStateOf(defaultDate())
+        private set
+
+    var deliveryFeeText by mutableStateOf("")
+        private set
+
+    var note by mutableStateOf("")
         private set
 
     private val _items = mutableStateListOf(
@@ -33,8 +42,20 @@ class VoucherViewModel : ViewModel() {
         address = value
     }
 
+    fun updatePhoneNumber(value: String) {
+        phoneNumber = value
+    }
+
     fun updateVoucherDate(value: String) {
         voucherDate = value
+    }
+
+    fun updateDeliveryFee(value: String) {
+        deliveryFeeText = value
+    }
+
+    fun updateNote(value: String) {
+        note = value
     }
 
     fun addItem() {
@@ -66,12 +87,17 @@ class VoucherViewModel : ViewModel() {
 
     fun subtotal(): Double = items.sumOf(::itemSubtotal)
 
-    fun total(): Double = subtotal()
+    fun total(): Double = subtotal() + deliveryFee()
+
+    fun deliveryFee(): Double = deliveryFeeText.toDoubleOrNull() ?: 0.0
 
     fun resetForm() {
         customerName = ""
         address = ""
+        phoneNumber = ""
         voucherDate = defaultDate()
+        deliveryFeeText = ""
+        note = ""
         _items.clear()
         _items.add(newBlankItem())
     }
@@ -89,15 +115,19 @@ class VoucherViewModel : ViewModel() {
         }
 
         val allSubtotal = voucherItems.sumOf { it.subtotal }
+        val fee = deliveryFee()
         return VoucherData(
             customerName = customerName.ifBlank { "-" },
             address = address.ifBlank { "-" },
+            phoneNumber = phoneNumber.ifBlank { "-" },
             voucherDate = voucherDate.ifBlank {
                 LocalDate.now().format(DateTimeFormatter.ISO_DATE)
             },
             items = voucherItems,
             subtotal = allSubtotal,
-            total = allSubtotal
+            deliveryFee = fee,
+            note = note.ifBlank { "-" },
+            total = allSubtotal + fee
         )
     }
 

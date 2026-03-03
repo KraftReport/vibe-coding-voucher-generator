@@ -159,6 +159,24 @@ private fun VoucherScreen(vm: VoucherViewModel = viewModel()) {
 
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
+                            value = vm.phoneNumber,
+                            onValueChange = vm::updatePhoneNumber,
+                            label = { Text("Phone Number") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                            singleLine = true
+                        )
+
+                        OutlinedTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = vm.deliveryFeeText,
+                            onValueChange = vm::updateDeliveryFee,
+                            label = { Text("Delivery Fee") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                            singleLine = true
+                        )
+
+                        OutlinedTextField(
+                            modifier = Modifier.fillMaxWidth(),
                             value = vm.voucherDate,
                             onValueChange = vm::updateVoucherDate,
                             label = { Text("Date (YYYY-MM-DD)") },
@@ -247,12 +265,15 @@ private fun VoucherScreen(vm: VoucherViewModel = viewModel()) {
                         Text("Name: ${vm.customerName.ifBlank { "-" }}", fontFamily = myanmarFont)
                         Text("Date: ${vm.voucherDate}", fontFamily = myanmarFont)
                         Text("Address: ${vm.address.ifBlank { "-" }}", fontFamily = myanmarFont)
+                        Text("Phone: ${vm.phoneNumber.ifBlank { "-" }}", fontFamily = myanmarFont)
                         vm.items.forEach { item ->
                             Text(
                                 "${item.itemName.ifBlank { "-" }} | ${item.priceText.ifBlank { "0" }} x ${item.quantityText.ifBlank { "0" }} = ${money.format(vm.itemSubtotal(item))}",
                                 fontFamily = myanmarFont
                             )
                         }
+                        Text("Delivery Fee: ${money.format(vm.deliveryFee())}", fontFamily = myanmarFont)
+                        Text("Note: ${vm.note.ifBlank { "-" }}", fontFamily = myanmarFont)
                     }
                 }
 
@@ -274,6 +295,14 @@ private fun VoucherScreen(vm: VoucherViewModel = viewModel()) {
                         )
                     }
                 }
+
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = vm.note,
+                    onValueChange = vm::updateNote,
+                    label = { Text("Note") },
+                    minLines = 2
+                )
 
                 Button(
                     modifier = Modifier.fillMaxWidth(),

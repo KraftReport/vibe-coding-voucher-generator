@@ -28,7 +28,7 @@ object VoucherPngExporter {
 
     private fun render(voucher: VoucherData): Bitmap {
         val width = 1400
-        val baseHeight = 980
+        val baseHeight = 1120
         val rowHeight = 74
         val dynamicHeight = voucher.items.size * rowHeight
         val bitmap = Bitmap.createBitmap(width, baseHeight + dynamicHeight, Bitmap.Config.ARGB_8888)
@@ -87,6 +87,10 @@ object VoucherPngExporter {
         canvas.drawText("Date: ${voucher.voucherDate}", 50f, y, textPaint)
         y += 52f
         canvas.drawText("Address: ${voucher.address}", 50f, y, textPaint)
+        y += 52f
+        canvas.drawText("Phone: ${voucher.phoneNumber}", 50f, y, textPaint)
+        y += 52f
+        canvas.drawText("Delivery Fee: ${money.format(voucher.deliveryFee)}", 50f, y, textPaint)
         y += 58f
 
         canvas.drawRoundRect(RectF(40f, y - 34f, width - 40f, y + 20f), 8f, 8f, tableHeaderPaint)
@@ -110,6 +114,8 @@ object VoucherPngExporter {
         y += 72f
         canvas.drawRoundRect(RectF(650f, y - 56f, width - 40f, y + 18f), 10f, 10f, headerBgPaint)
         canvas.drawText("Grand Total: ${money.format(voucher.total)}", 680f, y, headerPaint)
+        y += 64f
+        canvas.drawText("Note: ${voucher.note}", 50f, y, textPaint)
 
         return bitmap
     }

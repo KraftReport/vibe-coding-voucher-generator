@@ -17,8 +17,11 @@ data class VoucherItem(
 data class VoucherData(
     val customerName: String,
     val address: String,
+    val phoneNumber: String,
     val voucherDate: String,
     val items: List<VoucherItem>,
     val subtotal: Double,
+    val deliveryFee: Double,
+    val note: String,
     val total: Double
 )
